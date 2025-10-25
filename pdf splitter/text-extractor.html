@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Text Extractor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 PDF Text Extractor</h1>
+            <p>Extract text from PDFs, even scanned documents</p>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+                PDF Splitter
+            </a>
+        </div>
+
+        <div class="upload-section">
+            <div class="upload-box" id="uploadBox">
+                <input type="file" id="pdfInput" accept="application/pdf" hidden>
+                <div class="upload-content">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p class="upload-text">Click to upload or drag and drop</p>
+                    <p class="upload-subtext">PDF files (text or scanned)</p>
+                </div>
+            </div>
+            <div id="fileInfo" class="file-info" style="display: none;">
+                <div class="file-details">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <div>
+                        <p class="file-name" id="fileName"></p>
+                        <p class="file-pages" id="filePages"></p>
+                    </div>
+                </div>
+                <button class="remove-btn" id="removeFile">✕</button>
+            </div>
+        </div>
+
+        <div class="options-section" id="optionsSection" style="display: none;">
+            <h2>Extraction Options</h2>
+            <div class="option-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="useOCR" checked>
+                    <span>Use OCR for scanned PDFs (slower but works on images)</span>
+                </label>
+            </div>
+            <div class="option-group" style="margin-top: 10px;">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="twoColumn" checked>
+                    <span>Two-column layout (reads left column first, then right)</span>
+                </label>
+            </div>
+            <div class="option-group" style="margin-top: 10px;">
+                <label class="slider-label">
+                    <span>Crop margins (removes edge text from adjacent pages)</span>
+                    <div class="slider-container">
+                        <input type="range" id="marginCrop" min="0" max="15" value="8" step="1">
+                        <span class="slider-value" id="marginValue">8%</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="action-section" id="actionSection" style="display: none;">
+            <button class="btn-primary" id="extractBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Extract Text
+            </button>
+        </div>
+
+        <div class="progress-section" id="progressSection" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">Processing...</p>
+        </div>
+
+        <div class="preview-section" id="previewSection" style="display: none;">
+            <h2>Extracted Text <span class="editable-hint">(editable)</span></h2>
+            <div class="text-stats" id="textStats"></div>
+            <textarea id="extractedText" class="text-preview" placeholder="Edit the text here to remove unwanted content before downloading..."></textarea>
+            <div class="preview-actions">
+                <button class="btn-secondary" id="copyBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy Text
+                </button>
+                <button class="btn-primary" id="downloadBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download as TXT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load required libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script src="text-extractor.js"></script>
+</body>
+</html>
+

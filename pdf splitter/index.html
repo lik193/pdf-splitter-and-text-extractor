@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Page Splitter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 PDF Page Splitter</h1>
+            <p>Extract specific pages from your PDF files</p>
+        </div>
+
+        <div class="nav-links">
+            <a href="text-extractor.html" class="nav-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                Text Extractor
+            </a>
+        </div>
+
+        <div class="upload-section">
+            <div class="upload-box" id="uploadBox">
+                <input type="file" id="pdfInput" accept="application/pdf" hidden>
+                <div class="upload-content">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p class="upload-text">Click to upload or drag and drop</p>
+                    <p class="upload-subtext">PDF files up to 2000 pages</p>
+                </div>
+            </div>
+            <div id="fileInfo" class="file-info" style="display: none;">
+                <div class="file-details">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <div>
+                        <p class="file-name" id="fileName"></p>
+                        <p class="file-pages" id="filePages"></p>
+                    </div>
+                </div>
+                <button class="remove-btn" id="removeFile">✕</button>
+            </div>
+        </div>
+
+        <div class="range-section" id="rangeSection" style="display: none;">
+            <h2>Select Page Range</h2>
+            <div class="input-group">
+                <div class="input-field">
+                    <label for="startPage">Start Page</label>
+                    <input type="number" id="startPage" min="1" value="1">
+                </div>
+                <div class="input-separator">to</div>
+                <div class="input-field">
+                    <label for="endPage">End Page</label>
+                    <input type="number" id="endPage" min="1" value="1">
+                </div>
+            </div>
+            <div class="range-info" id="rangeInfo"></div>
+        </div>
+
+        <div class="action-section" id="actionSection" style="display: none;">
+            <button class="btn-primary" id="splitBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download Split PDF
+            </button>
+        </div>
+
+        <div class="progress-section" id="progressSection" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Load PDF-lib from CDN -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
